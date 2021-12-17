@@ -1,23 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
+import ViewPage from './components/ViewPage';
+import EditPage from './components/EditPage';
+
+
+
 function App() {
+
+  const [isEdit, setIsEdit] = useState(true)
+  const [cards, setCards] = useState([])
+
+  const handleClick = () => {
+    setIsEdit(!isEdit)
+  }
+
+  const addCard = (front, back) => {
+    setCards([...cards, { front, back }])
+  }
+
+  const handleDelete = (index) => {
+    const card = [...cards]
+    card.splice(index, 1);
+    setCards(card);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+
+      {isEdit ?
+        <EditPage
+          cards={cards}
+          handleClick={handleClick} addCard={addCard} deleteCard={handleDelete} /> :
+
+        <ViewPage
+          cards={cards}
+          handleClick={handleClick} />}
     </div>
   );
 }
